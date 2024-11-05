@@ -35,10 +35,10 @@ let subCategories = [
     SubCategory(name: "Bronsted Acid-Base",
                 reactions: [
                     ReactionFile(
-                        name: "Acetone-LDA", filename: "Acid-Base_Acetone_LDA", transitionState: -1,
+                        name: "Acetone-LDA", filename: "Acetone_LDA", transitionState: -1,
                         description: "This trajectory shows that the basic nitrogen must first orient properly to react with the C-H bond of acetone. This involves a linear arrangement, 180 degree angle, between the nitrogen atom, the transferring proton, and the carbon that is being deprotonated."),
                     ReactionFile(
-                        name: "Trifluoroacetic Acid-Methoxide", filename: "Acid-Base_TFA_Methoxide", transitionState: -1,
+                        name: "Trifluoroacetic Acid-Methoxide", filename: "TFA_Methoxide", transitionState: -1,
                         description: "This trajectory shows the proton transfer reaction between methoxide and trifluoroacetic acid. Hydrogen bonding precedes, but only for a very short time, proton transfer. Notice that the proton transfers back and forth very rapidly between methoxide and trifluoroacetate several times before dissociation of methanol.")
                 ].sorted(by: { $0.name < $1.name })),
     SubCategory(name: "Alkyl Substitution",
@@ -70,10 +70,10 @@ let subCategories = [
     SubCategory(name: "Elimination",
                 reactions: [
                     ReactionFile(
-                        name: "E1cb: Alkyl Chloride + Methoxide", filename: "E1cb_PhenylChloroNitroPropane", transitionState: -1,
+                        name: "E1cb: Alkyl Chloride + Methoxide", filename: "PhenylChloroNitroPropane_E1cb_NitroPhenylPropene", transitionState: -1,
                         description: ""),
                     ReactionFile(
-                        name: "E2: 2-Bromobutane (Primary) + Methoxide", filename: "2-BromobutaneMeO", transitionState: 1002,
+                        name: "E2: 2-Bromobutane (Primary) + Methoxide", filename: "2-Bromobutane", transitionState: 1002,
                         description: ""),
                     ReactionFile(
                         name: "E2: 2-Bromobutane (Secondary) + Methoxide", filename: "2-Bromobutane_E2_Butene", transitionState: 353,
@@ -82,13 +82,13 @@ let subCategories = [
     SubCategory(name: "Alkene Addition",
                 reactions: [
                     ReactionFile(
-                        name: "HX: HBr + Isobutylene", filename: "AdE_Butene", transitionState: 158,
+                        name: "HX: HBr + Isobutylene", filename: "Butene_EA_bromobutane", transitionState: 300,
                         description: "This hydrohalogenation trajectory shows HBr protonation of isobutylene to generate a tertiary carbocation intermediate. Because this trajectory does not have solvent around to stabilize the carbocation, bromide very quickly forms the C-Br bond to give the additional product. With solvent around the carbocation would exist for a much longer time."),
                     ReactionFile(
                         name: "Hydroboration: BH₃ + 1-Butene", filename: "AdE_Hydroboration", transitionState: 0,
                         description: "Hydroboration of an alkene generally does not involve a carbocation intermediate. This trajectory shows the reaction between the electrophile BH3 and 1-butene. In the early time of the trajectory the π bond interacts with the electrophilic boron. Very soon after this electrophilic interaction the boron transfers a hydride to the C-2 atom and this occurs without forming a carbocation intermediate."),
                     ReactionFile(
-                        name: "Carbene: CCl₂ + Ethylene", filename: "AdE_Carbene_addtion", transitionState: 250,
+                        name: "Carbene: CCl₂ + Ethylene", filename: "DichloroCarbene_EA_DichloroCyclopropane", transitionState: 250,
                         description: "This trajectory shows the reactive collision between dichlorocarbene (a divalent form of carbon) and ethylene. The trajectory progresses through a transition state (use the TS button) where the dominant interaction is between the ethylene π orbital and the empty p orbital of the carbene. This trajectory shows there is no carbocation intermediate and both new C-C bonds are asynchronously formed in one reaction step."),
                     ReactionFile(
                         name: "Carbene: CH₂ + Ethylene (Triplet-Singlet Flip)", filename: "carbene_TS_cyclopantane_triplet_TS200", transitionState: 200,
@@ -124,7 +124,7 @@ let subCategories = [
     SubCategory(name: "Reduction",
                 reactions: [
                     ReactionFile(
-                        name: "Hydride Reduction: LAH + Acetone", filename: "AdN_Red_Acetone", transitionState: 1013,
+                        name: "Hydride Reduction: LAH + Acetone", filename: "Acetobe_NA_Isopropanol", transitionState: 1013,
                         description: "This trajectory shows the reaction of LiAlH4 with acetone and results in hydride transfer. This trajectory shows that the Li cation templates the motion and direction of hydride transfer to the carbonyl. After hydride addition the anionic oxygen interacts with borane.")
                 ].sorted(by: { $0.name < $1.name })),
     SubCategory(name: "Carbonyl Addition",

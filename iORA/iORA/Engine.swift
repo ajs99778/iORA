@@ -202,17 +202,21 @@ class Engine {
         let node2 = SCNNode(geometry: baseGeometry2)
         let node3 = SCNNode(geometry: baseGeometry3)
         
+        // picture this: you're an equilateral triangle
+        // the distance from your centroid to one of your
+        // vertices is 0.09
+        // where are the vertices?
         node1.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
                                     y: Float((c[2] + c[3]) / 2),
-                                    z: Float((c[4] + c[5]) / 2) - 0.09)
+                                    z: Float((c[4] + c[5]) / 2) + 0.09)
         
         node2.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
-                                    y: Float((c[2] + c[3]) / 2),
-                                    z: Float((c[4] + c[5]) / 2) + 0.09)
+                                    y: Float((c[2] + c[3]) / 2) - 0.07795,
+                                    z: Float((c[4] + c[5]) / 2) - 0.045)
         
-        node3.position = SCNVector3(x: Float((c[0] + c[1]) / 2) + 0.09,
-                                    y: Float((c[2] + c[3]) / 2) + 0.09,
-                                    z: Float((c[4] + c[5]) / 2) + 0.09)
+        node3.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
+                                    y: Float((c[2] + c[3]) / 2) + 0.07795,
+                                    z: Float((c[4] + c[5]) / 2) - 0.045)
         
         node1.eulerAngles = SCNVector3((Float.pi / 2),
                                        acos((c[5]-c[4])/Float((distance))),
@@ -393,7 +397,6 @@ class Engine {
         } else {
             return nil
         }
-                    
         guard let color = atomRadii[atomName]?.color else { return nil }
         
         let atomGeometry = SCNSphere(radius: CGFloat(radius))

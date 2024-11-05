@@ -22,6 +22,35 @@ extension String {
     }
 }
 
+public func molCode_to_bondOrder(bo: String) -> Double {
+    // single
+    if bo == "1" {
+        return 1.0
+    }
+    // double
+    else if bo == "2" {
+        return 2.0
+    }
+    // triple
+    else if bo == "3" {
+        return 3.0
+    }
+    // aromatic
+    else if bo == "4" {
+        return 1.5
+    }
+    // partial double
+    else if bo == "5" {
+        return 1.5
+    }
+    // half
+    else if bo == "8" {
+        return 0.5
+    }
+    // default
+    return 1.0
+}
+
 public class FileLoader {
     private var ignoreLinesStart: Int
     private var ignoreLinesEnd: Int
@@ -30,6 +59,7 @@ public class FileLoader {
     private var arrayAtoms: [Atom]
     private var arrayBonds: [Bond]
     private var reaction = Reaction()
+    private var style: String
     
     public init() {
         self.ignoreLinesStart = 0
@@ -39,6 +69,7 @@ public class FileLoader {
         self.arrayAtoms = []
         self.arrayBonds = []
         self.reaction = Reaction()
+        self.style = ""
     }
     
     public func parseReactionFile(inputFile: URL?) throws -> FileLoader {
@@ -63,6 +94,7 @@ public class FileLoader {
         self.numBonds = -1
         self.arrayAtoms = []
         self.arrayBonds = []
+        self.style = ""
     }
     
     private func parseSdfFile(inputFile: URL) throws {
@@ -106,16 +138,19 @@ public class FileLoader {
             self.ignoreLinesStart -= 1
         }
         else if self.numAtoms < 0 && self.numBonds < 0 {
-            let words = lineString.condenseWhitespace().components(separatedBy: " ")
-            guard words.count >= 2 else {
-                throw ReadFileError.invalidFileFormat
-            }
-            if let numAtoms = Int(words[0]),
-               let numBonds = Int(words[1]) {
-                self.numAtoms = numAtoms
-                self.numBonds = numBonds
-            } else {
-                throw ReadFileError.invalidFileFormat
+            if lineString.lowercased().contains("v2000") {
+                self.style = "V2000"
+                let words = lineString.condenseWhitespace().components(separatedBy: " ")
+                guard words.count >= 2 else {
+                    throw ReadFileError.invalidFileFormat
+                }
+                if let numAtoms = Int(words[0]),
+                   let numBonds = Int(words[1]) {
+                    self.numAtoms = numAtoms
+                    self.numBonds = numBonds
+                } else {
+                    throw ReadFileError.invalidFileFormat
+                }
             }
         }
         else if self.numAtoms > 0 {
@@ -139,12 +174,13 @@ public class FileLoader {
                 throw ReadFileError.invalidFileFormat
             }
             if let atom1 = Int(words[0]),
-               let atom2 = Int(words[1]),
-               let order = Double(words[2]) {
+               let atom2 = Int(words[1]){
                 guard self.arrayAtoms.count >= atom1 && self.arrayAtoms.count >= atom2 else {
                     throw ReadFileError.invalidFileFormat
                 }
-                self.arrayBonds.append(Bond(self.arrayAtoms[atom1-1], self.arrayAtoms[atom2-1], order))
+                let order = words[2]
+                let bond_order = molCode_to_bondOrder(bo:order)
+                self.arrayBonds.append(Bond(self.arrayAtoms[atom1-1], self.arrayAtoms[atom2-1], bond_order))
                 self.numBonds -= 1
             } else {
                 throw ReadFileError.invalidFileFormat
