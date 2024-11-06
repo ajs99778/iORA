@@ -206,17 +206,61 @@ class Engine {
         // the distance from your centroid to one of your
         // vertices is 0.09
         // where are the vertices?
-        node1.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
-                                    y: Float((c[2] + c[3]) / 2),
-                                    z: Float((c[4] + c[5]) / 2) + 0.09)
+        // an alternative approach to consider for the future:
+        // leave one cylinder in the middle (no offset) and
+        // have the other two on either side, the way jmol does it
+        // if these cylinders are always in the plane of the
+        // screen, as they are in jmol, the bond order is clear
+        // from any orientation
+        let dc: [Float] = [c[1] - c[0], c[3] - c[2], c[5] - c[4]]
+        // vector that's perpendicular to the bond
+        // roll the bond vector to get a different vector
+        // then take the cross product of the new vector with
+        // the bond vector
+        var roll_vec: [Float] = [dc[2], dc[0], dc[1]]
+        if dc[2] == dc[1] && dc[2] == dc[0] {
+            roll_vec[0] = -1 * roll_vec[0]
+        }
+        var perp_vec: [Float] = [0.0, 0.0, 0.0]
+        perp_vec[0] = dc[1] * roll_vec[2] - dc[2] * roll_vec[1]
+        perp_vec[1] = dc[2] * roll_vec[0] - dc[0] * roll_vec[2]
+        perp_vec[2] = dc[0] * roll_vec[1] - dc[1] * roll_vec[0]
+        // find another vector that's perpdicular to both
+        // the bond and the first perpendicular vector
+        var perp_vec2: [Float] = [0.0, 0.0, 0.0]
+        perp_vec2[0] = dc[1] * perp_vec[2] - dc[2] * perp_vec[1]
+        perp_vec2[1] = dc[2] * perp_vec[0] - dc[0] * perp_vec[2]
+        perp_vec2[2] = dc[0] * perp_vec[1] - dc[1] * perp_vec[0]
+        // normalize vectors
+        var pv_n: Float = 0
+        var pv2_n: Float = 0
+        for i in 0...2 {
+            pv_n = pv_n + pow(perp_vec[i], 2)
+            pv2_n = pv2_n + pow(perp_vec2[i], 2)
+        }
+        pv_n = sqrtf(pv_n)
+        pv2_n = sqrtf(pv2_n)
+        for i in 0...2 {
+            perp_vec[i] = perp_vec[i] / pv_n
+            perp_vec2[i] = perp_vec2[i] / pv2_n
+        }
+
+        // first bond cylinder is 0.09 away from where the single
+        // bond would be, and it is shifted in the direction
+        // of perp_vec
+        // the other cylinders are also 0.09 away, but their
+        // shifted according to perp_vec and perp_vec2
+        node1.position = SCNVector3(x: Float((c[0] + c[1]) / 2) + 0.09 * perp_vec[0],
+                                    y: Float((c[2] + c[3]) / 2) + 0.09 * perp_vec[1],
+                                    z: Float((c[4] + c[5]) / 2) + 0.09 * perp_vec[2])
         
-        node2.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
-                                    y: Float((c[2] + c[3]) / 2) - 0.07795,
-                                    z: Float((c[4] + c[5]) / 2) - 0.045)
+        node2.position = SCNVector3(x: Float((c[0] + c[1]) / 2) - 0.07795 * perp_vec2[0] - 0.045 * perp_vec[0],
+                                    y: Float((c[2] + c[3]) / 2) - 0.07795 * perp_vec2[1] - 0.045 * perp_vec[1],
+                                    z: Float((c[4] + c[5]) / 2) - 0.07795 * perp_vec2[2] - 0.045 * perp_vec[2])
         
-        node3.position = SCNVector3(x: Float((c[0] + c[1]) / 2),
-                                    y: Float((c[2] + c[3]) / 2) + 0.07795,
-                                    z: Float((c[4] + c[5]) / 2) - 0.045)
+        node3.position = SCNVector3(x: Float((c[0] + c[1]) / 2) + 0.07795 * perp_vec2[0] - 0.045 * perp_vec[0],
+                                    y: Float((c[2] + c[3]) / 2) + 0.07795 * perp_vec2[1] - 0.045 * perp_vec[1],
+                                    z: Float((c[4] + c[5]) / 2) + 0.07795 * perp_vec2[2] - 0.045 * perp_vec[2])
         
         node1.eulerAngles = SCNVector3((Float.pi / 2),
                                        acos((c[5]-c[4])/Float((distance))),

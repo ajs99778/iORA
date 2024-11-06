@@ -85,7 +85,7 @@ let subCategories = [
                         name: "HX: HBr + Isobutylene", filename: "Butene_EA_bromobutane", transitionState: 300,
                         description: "This hydrohalogenation trajectory shows HBr protonation of isobutylene to generate a tertiary carbocation intermediate. Because this trajectory does not have solvent around to stabilize the carbocation, bromide very quickly forms the C-Br bond to give the additional product. With solvent around the carbocation would exist for a much longer time."),
                     ReactionFile(
-                        name: "Hydroboration: BH₃ + 1-Butene", filename: "AdE_Hydroboration", transitionState: 0,
+                        name: "Hydroboration: BH₃ + 1-Butene", filename: "butene_EA_butylborane", transitionState: 0,
                         description: "Hydroboration of an alkene generally does not involve a carbocation intermediate. This trajectory shows the reaction between the electrophile BH3 and 1-butene. In the early time of the trajectory the π bond interacts with the electrophilic boron. Very soon after this electrophilic interaction the boron transfers a hydride to the C-2 atom and this occurs without forming a carbocation intermediate."),
                     ReactionFile(
                         name: "Carbene: CCl₂ + Ethylene", filename: "DichloroCarbene_EA_DichloroCyclopropane", transitionState: 250,
@@ -124,7 +124,7 @@ let subCategories = [
     SubCategory(name: "Reduction",
                 reactions: [
                     ReactionFile(
-                        name: "Hydride Reduction: LAH + Acetone", filename: "Acetobe_NA_Isopropanol", transitionState: 1013,
+                        name: "Hydride Reduction: LAH + Acetone", filename: "Acetone_NA_Isopropanol", transitionState: 1013,
                         description: "This trajectory shows the reaction of LiAlH4 with acetone and results in hydride transfer. This trajectory shows that the Li cation templates the motion and direction of hydride transfer to the carbonyl. After hydride addition the anionic oxygen interacts with borane.")
                 ].sorted(by: { $0.name < $1.name })),
     SubCategory(name: "Carbonyl Addition",
